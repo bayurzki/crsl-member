@@ -17,6 +17,15 @@ class Config extends CI_Controller {
         $webhook = json_decode($webhook,TRUE);
 
         if (sizeof($webhook['webhooks']) < 2) {
+            $uninstall = '{
+                "webhook": {
+                    "topic": "app/uninstalled",
+                    "address": "'.base_url().'webhooks/app_uninstall?shop='.$data['shop']->url_shopify.'",
+                    "format": "json"
+                }
+            }';
+            $this->shopify->api_post($$data['shop']->url_shopify,'webhooks.json',$data['shop']->token_store, $uninstall);
+
             $customer_create = '{
                 "webhook":{
                     "topic":"customers/create",

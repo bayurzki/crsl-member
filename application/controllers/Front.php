@@ -16,7 +16,7 @@ class Front extends CI_Controller {
 
     public function index(){
     	$all_merchant = $this->Data_master_m->all_merchant();
-    	
+    	echo base_url();
     	echo "<pre>";
     	var_dump($all_merchant);
     	echo "</pre>";
@@ -250,17 +250,7 @@ class Front extends CI_Controller {
 
 				$this->db->insert('merchant_data', $merchant_data);
 
-				$webhookna = '
-		        {
-		            "webhook": {
-		                "topic": "app/uninstalled",
-		                "address": "'.base_url().'/webhooks/app_uninstall",
-		                "format": "json"
-		            }
-		        }';
-
-
-		        $scriptTag = $this->shopify->api_post($params['shop'], "webhooks.json", $access_token, $webhookna);
+				
         	}else{
         		$data_update = array(
         			'url_shopify' => $params['shop'],
