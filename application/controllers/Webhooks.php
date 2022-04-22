@@ -483,6 +483,43 @@ class Webhooks extends CI_Controller {
         
     }
 
+    public function tess(){
+      $data = array(
+        array(
+          'event' => 'orders',
+          'id_merchant' => 1234,
+          'nama' => 'Customer Order',
+          'type' => 1,
+          'point' => 0.0001,
+          'ket' => 'Customer get 1 point/ 1000 rupiah paid',
+          'is_active' => 0,
+          'create_at' => date('Y-m-d H:i:s'),
+        ),
+        array(
+          'event' => 'orders',
+          'id_merchant' => 1234,
+          'nama' => 'Customer create account',
+          'type' => 1,
+          'point' => 1,
+          'ket' => 'Customer get 1 point when create account',
+          'is_active' => 0,
+          'create_at' => date('Y-m-d H:i:s'),
+        ),
+        array(
+          'event' => 'orders',
+          'id_merchant' => 1234,
+          'nama' => 'Customer Birtday',
+          'type' => 1,
+          'point' => 1,
+          'ket' => 'Customer get point in their birtday',
+          'is_active' => 0,
+          'create_at' => date('Y-m-d H:i:s'),
+        )
+      );
+
+      var_dump($data);
+    }
+
     public function shop_data_erasure(){
         header('Content-Type: application/json');
         $data = file_get_contents('php://input');

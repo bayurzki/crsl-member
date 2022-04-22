@@ -17,8 +17,8 @@ class Config extends CI_Controller {
         $data['shop'] = $this->Data_master_m->merchant_byid($_GET['id']);
         $webhook = $this->shopify->api_get($data['shop']->url_shopify,'webhooks.json',$data['shop']->token_store);
         $webhook = json_decode($webhook,TRUE);
-
-        if (sizeof($webhook['webhooks']) < 2) {
+        
+        if (sizeof($webhook['webhooks']) < 3) {
             if (base_url() == 'https://crsl-member.com/') {
                 $base_url = 'https://bdd.services/crsl-member/';
             }else{
@@ -42,6 +42,15 @@ class Config extends CI_Controller {
                 }
             }';
             $this->shopify->api_post($data['shop']->url_shopify,'webhooks.json',$data['shop']->token_store,$customer_create);
+
+            $orders_paid = '{
+                "webhook":{
+                    "topic":"orders/paid",
+                    "address":"'.$base_url.'webhooks/order_paid?shop='.$data['shop']->url_shopify.'",
+                    "format":"json"
+                }
+            }';
+            $this->shopify->api_post($data['shop']->url_shopify,'webhooks.json',$data['shop']->token_store,$orders_paid);
         }
 
         $data['member'] = $this->Data_master_m->member_all($data['shop']->url_shopify);

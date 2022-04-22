@@ -250,7 +250,40 @@ class Front extends CI_Controller {
 
 				$this->db->insert('merchant_data', $merchant_data);
 
-				
+				$data_earn = array(
+			        array(
+			          'event' => 'orders',
+			          'id_merchant' => $shop['shop']['id'],
+			          'nama' => 'Customer Order',
+			          'type' => 1,
+			          'point' => 0.0001,
+			          'ket' => 'Customer get 1 point/ 1000 rupiah paid',
+			          'is_active' => 0,
+			          'create_at' => date('Y-m-d H:i:s'),
+			        ),
+			        array(
+			          'event' => 'account',
+			          'id_merchant' => $shop['shop']['id'],
+			          'nama' => 'Customer create account',
+			          'type' => 0,
+			          'point' => 1,
+			          'ket' => 'Customer get 1 point when create account',
+			          'is_active' => 0,
+			          'create_at' => date('Y-m-d H:i:s'),
+			        ),
+			        array(
+			          'event' => 'birtday',
+			          'id_merchant' => $shop['shop']['id'],
+			          'nama' => 'Customer Birtday',
+			          'type' => 0,
+			          'point' => 1,
+			          'ket' => 'Customer get point in their birtday',
+			          'is_active' => 0,
+			          'create_at' => date('Y-m-d H:i:s'),
+			        )
+			      );
+
+				$this->db->insert_batch('earns', $data_earn);
         	}else{
         		$data_update = array(
         			'url_shopify' => $params['shop'],
