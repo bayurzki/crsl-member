@@ -12,169 +12,203 @@ class Config extends CI_Controller {
     }
 
     public function index(){
+        $data['id'] = $_GET['id'];
+        $data['nav'] = 'member';
         $data['shop'] = $this->Data_master_m->merchant_byid($_GET['id']);
         $webhook = $this->shopify->api_get($data['shop']->url_shopify,'webhooks.json',$data['shop']->token_store);
         $webhook = json_decode($webhook,TRUE);
 
         if (sizeof($webhook['webhooks']) < 2) {
+            if (base_url() == 'https://crsl-member.com/') {
+                $base_url = 'https://bdd.services/crsl-member/';
+            }else{
+                $base_url = base_url();
+            }
+
             $uninstall = '{
                 "webhook": {
                     "topic": "app/uninstalled",
-                    "address": "'.base_url().'webhooks/app_uninstall?shop='.$data['shop']->url_shopify.'",
+                    "address": "'.$base_url.'webhooks/app_uninstall?shop='.$data['shop']->url_shopify.'",
                     "format": "json"
                 }
             }';
-            $this->shopify->api_post($$data['shop']->url_shopify,'webhooks.json',$data['shop']->token_store, $uninstall);
+            $this->shopify->api_post($data['shop']->url_shopify,'webhooks.json',$data['shop']->token_store, $uninstall);
 
             $customer_create = '{
                 "webhook":{
                     "topic":"customers/create",
-                    "address":"'.base_url().'webhooks/customer_create?shop='.$data['shop']->url_shopify.'",
+                    "address":"'.$base_url.'webhooks/customer_create?shop='.$data['shop']->url_shopify.'",
                     "format":"json"
                 }
             }';
             $this->shopify->api_post($data['shop']->url_shopify,'webhooks.json',$data['shop']->token_store,$customer_create);
         }
 
-
+        $data['member'] = $this->Data_master_m->member_all($data['shop']->url_shopify);
         $this->template->load('template_config','config/index', $data);
     }
 
-    public function product(){
-    	parse_str($_SERVER['QUERY_STRING'], $outputArray);
-        $merchant_row = $this->Data_master_m->merchant_row($outputArray['shop']);
-        $token = $merchant_row->token_store;
-
-    	$products = $this->shopify->shopify_call($outputArray['shop'], "/admin/products.json", array(), 'GET');
-
-		// Convert product JSON information into an array
-		
-		$produkna = json_decode($products['response'], TRUE);
-		$data['produkna'] = $produkna['products'];
-		
-    	$this->template->load('template_config','config/products', $data);
+    public function member($id){
+        $data['id'] = $_GET['id'];
+        $data['nav'] = 'member';
+        $data['shop'] = $this->Data_master_m->merchant_byid($_GET['id']);
+        $data['member'] = $this->Data_master_m->member($data['shop']->url_shopify,$id);
+        $this->template->load('template_config','config/member', $data);
     }
 
-    public function openapp(){
-        var_dump($_SERVER);
-        die();
-        parse_str($_SERVER['QUERY_STRING'], $outputArray);
-        $merchant_row = $this->Data_master_m->merchant_row($outputArray['shop']);
-        redirect('config/setting_product/'.$merchant_row->id_merchant);
-        
+    public function settings(){
+        $data['id'] = $_GET['id'];
+        $data['nav'] = 'setting';
+        $data['earns'] = $this->Data_master_m->earns($_GET['id']);
+        $this->template->load('template_config','config/settings', $data);
     }
 
-    public function app_charges($id_merchant){
-        $merchant_row = $this->Data_master_m->merchant_byid($id_merchant);
-        $merchant_uninstalled = $this->Data_master_m->merchant_uninstalled($merchant_row->url_shopify);
-            if (sizeof($merchant_uninstalled) > 0) {
-                $total_pake = 0;
-                foreach ($merchant_uninstalled as $key => $value) {
-                    $install_date = strtotime($value['installed_at']);
-                    $unsinstall_date = strtotime($value['create_at']);
-
-                    $timeDiff = abs($unsinstall_date - $install_date);
-
-                    $numberDays = $timeDiff/86400;  // 86400 seconds in one day
-                    $total_pake += $numberDays;
-                }
-
-                $total_pake = round($total_pake);
-                if ($total_pake > 0 AND $total_pake <= 14) {
-                    $free_trial = 14 - $total_pake;
-                }else{
-                    $free_trial = 14;
-                }
-            }else{
-                $free_trial = 14;
-            }
-            
-            $billed_date = date('Y-m-d', strtotime("+".round($free_trial)." days"));
-
-            $app_charges = array(
-                'recurring_application_charge' => array(
-                    'name' => 'UniqueTransactions Apps', 
-                    'return_url' => 'https://'.$merchant_row->url_shopify.'/admin/apps/kode-unik-order-1/kodeunik-apps/front/save_merchant/'.$merchant_row->url_shopify,
-                    "test"=> null,
-                    "price" => '4.99',
-                    "trial_days" => $free_trial,
-                    "billing_on" => $billed_date
-                )
-            );
-
-            $app_chargesna = $this->shopify->shopify_call($merchant_row->token_store, $merchant_row->url_shopify, "/admin/api/2020-04/recurring_application_charges.json", $app_charges, 'POST');
-
-        $data_app_charges = $app_chargesna['response'];
-        $data_app_charges = json_decode($data_app_charges, JSON_PRETTY_PRINT);
-
-        $this->db->where('id', $merchant_row->id);
-        $this->db->update('merchant_data', array(
-            'id_app_charges'=>$data_app_charges['recurring_application_charge']['id'],
-            'app_active_at' => date('Y-m-d H:i:s')
-
-        ));
-        return $data_app_charges['recurring_application_charge']['confirmation_url'];
+    public function update_earn($id){
+        $data['id'] = $_GET['id'];
+        $data['nav'] = 'setting';
+        $data['earn'] = $this->Data_master_m->earn($id);
+        $this->template->load('template_config','config/earn_update', $data);
     }
 
-    public function setting_product($id_merchant){
-        $headerna = array(
-            "Content-type" => "application/json" // Tell Shopify that we're expecting a response in JSON format
-        );
-
-        
-        parse_str($_SERVER['QUERY_STRING'], $outputArray);
-        $merchant_row = $this->Data_master_m->merchant_byid($id_merchant);
-        
-        $token = $merchant_row->token_store;
-        var_dump("te");
-    }
-
-    public function save_variant(){
+    public function earn_save(){
         extract($_POST);
-        $merchant_row = $this->Data_master_m->merchant_row($url_shopify);
-
-        $datana = array(
-            'id_variant' => $id_variant,
+        $data = array(
+            'point' => $point,
+            'is_active' => $is_active,
+            'type' => $type,
+            'update_at' => date('Y-m-d H:i:s')
         );
-        $this->db->where('id', $merchant_row->id);
-        $this->db->update('merchant_data', $datana);
+
+        $this->db->where('id',$id);
+        $this->db->update('earns',$data);
+
+        redirect('config/settings?id='.$shop_id);
     }
 
-    public function product_add(){
-        $headerna = array(
-            "Content-type" => "application/json" // Tell Shopify that we're expecting a response in JSON format
-        );
-        $token = 'e1675dacf618bd52eed6fd753e9f16f1';
-        parse_str($_SERVER['QUERY_STRING'], $outputArray);
-
-        $queryna = "{\r\n  \"product\": {\r\n    \"title\": \"kode unik151\",\r\n    \"variants\": [{\r\n        \"price\": \"134\"\r\n    }],\r\n    \"tags\": [\r\n      \"hidden-produk\",\r\n      \"hide\",\r\n      \"\\\"Big Air\\\"\"\r\n    ]\r\n  }\r\n}";
-
-        // $queryna = json_encode($queryna); 
-        $products = $this->shopify->apina($outputArray['shop'], "/admin/api/2019-10/products.json", $token , $queryna ,'POST');
-
-        //$produkna = json_decode($products['response'], TRUE);
-        var_dump($products);
+    public function rewards(){
+        $data['id'] = $_GET['id'];
+        $data['nav'] = 'reward';
+        $data['rewards'] = $this->Data_master_m->rewards($_GET['id']);
+        $this->template->load('template_config','config/rewards', $data);
     }
 
-    public function product_edit_price(){
-        
-        $headerna = array(
-            "Content-type" => "application/json" // Tell Shopify that we're expecting a response in JSON format
-        );
-        $token = 'e1675dacf618bd52eed6fd753e9f16f1';
-        parse_str($_SERVER['QUERY_STRING'], $outputArray);
-
-        $harganya = sprintf("%03d", mt_rand(1, 999));
-        $queryna = "{\r\n    \"variant\": {\r\n        \"price\": \"".$harganya."\",\r\n        \"inventory_policy\": \"deny\",\r\n        \"compare_at_price\": null,\r\n        \"fulfillment_service\": \"manual\",\r\n        \"inventory_management\": null,\r\n        \"taxable\": false\r\n    }\r\n}";
-        
-        $kode_variant = '32137995288664';
-        // $queryna = json_encode($queryna); 
-        $products = $this->shopify->apina($outputArray['shop'], "/admin/api/2020-01/variants/".$kode_variant.".json", $token , $queryna ,'PUT');
-
-        //$produkna = json_decode($products['response'], TRUE);
-        var_dump($products);
+    public function reward_form(){
+        $data['id'] = $_GET['id'];
+        if (isset($_GET['data_id'])) {
+            $data['reward'] = $this->Data_master_m->earn($_GET['data_id']);
+        }else{
+            $data['reward'] = '';
+        }
+        $data['nav'] = 'reward';
+        $this->template->load('template_config','config/reward_form', $data);
     }
 
+    public function form_terms(){
+        extract($_POST);
+        $data['shop'] = $this->Data_master_m->merchant_byid($id);
+        $data['id'] = $id;
+        if ($id != 0) {
+            $data['reward'] = $this->Data_master_m->earn($id);
+        }else{
+            $data['reward'] = '';
+        }
+        if ($type == 0) {
+            $this->load->view('config/reward_terms_shipping',$data);
+        }elseif ($type == 1) {
+            $this->load->view('config/reward_terms_selling',$data);
+        }else{
+            $this->load->view('config/reward_terms_not_selling',$data);
+        }
+    }
+
+    public function get_collection(){
+        extract($_POST);
+        $shop = $this->Data_master_m->merchant_byid($id);
+        $smart = $this->shopify->api_get($shop->url_shopify,'smart_collections',$shop->token_store);
+        $smart = json_decode($smart,true);
+        $smart = $smart['smart_collections'];
+
+        $custom = $this->shopify->api_get($shop->url_shopify,'custom_collections',$shop->token_store);
+        $custom = json_decode($custom,true);
+        $custom = $custom['custom_collections'];
+        echo json_encode(array_merge($smart,$custom));
+    }
+
+    public function reward_save(){
+        extract($_POST);
+        if ($type == 0) {
+            $terms = array(
+                'min_order' => $minimum_order,
+                'max_discount' => $max_discount
+            );
+        }elseif ($type == 1) {
+            $collection = array();
+            if ($condition == 'include') {
+                for ($i=0; $i < sizeof($col_inc); $i++) { 
+                    $collection[] = $col_inc[$i];
+                }
+
+                $collection = json_encode($collection);
+                $terms = array(
+                    'min_order' => $minimum_order,
+                    'max_discount' => $max_discount,
+                    'collection' => $collection,
+                    'condition' => $condition
+                );
+            }elseif ($condition == 'exclude'){
+                for ($i=0; $i < sizeof($col_exl); $i++) { 
+                    $collection[] = $col_exl[$i];
+                }
+
+                $collection = json_encode($collection);
+                $terms = array(
+                    'min_order' => $minimum_order,
+                    'max_discount' => $max_discount,
+                    'collection' => $collection,
+                    'condition' => $condition
+                );
+            }else{
+                $terms = array(
+                    'min_order' => $minimum_order,
+                    'max_discount' => $max_discount,
+                    'condition' => $condition
+                );
+            }
+        }else{
+            $terms = array(
+                'min_order' => $minimum_order,
+                'gift_name' => $gift_name
+            );
+        }
+        // var_dump($terms);
+        // die();
+        if ($id == 0) {
+            $data = array(
+                'id_merchant' => $shop_id,
+                'title' => $title,
+                'type' => $type,
+                'terms' => json_encode($terms),
+                'point' => $point,
+                'multi_use' => $multi_use,
+                'create_at' => date('Y-m-d H:i:s', strtotime($create_at))
+            );
+            $this->db->insert('rewards', $data);
+        }else{
+            $data = array(
+                'id_merchant' => $shop_id,
+                'title' => $title,
+                'type' => $type,
+                'terms' => json_encode($terms),
+                'point' => $point,
+                'multi_use' => $multi_use,
+                'update_at' => date('Y-m-d H:i:s', strtotime($create_at))
+            );
+            $this->db->where('id',$id);
+            $this->db->update('rewards', $data);
+        }
+
+        redirect('config/rewards?id='.$shop_id);
+    }
     function send_request_mail(){
         extract($_POST);
         $to_email = 'app@bolehdicoba.com';
@@ -226,29 +260,6 @@ class Config extends CI_Controller {
 
         }
 
-    }
-    function add_product_handle(){
-        extract($_POST);
-        $merchant_row = $this->Data_master_m->merchant_row($url_shopify);
-        $token = $merchant_row->token_store;
-
-        $products = $this->shopify->apina($url_shopify, "/admin/api/2019-10/products.json", $token , array() ,'GET');
-        $products = json_decode($products, TRUE);
-        $products = $products['products'];
-
-        $cek_handle = array_search($product_handle, array_column($products, 'handle'));
-        if ($cek_handle != NULL) {
-            $product_variant = $this->shopify->apina($url_shopify, "/admin/api/2019-10/products/".$products[$cek_handle]['id'].".json", $token , array() ,'GET');
-            $product_variant = json_decode($product_variant, TRUE);
-            $product_variant = $product_variant['product']['variants'];
-            $this->db->where('id', $merchant_row->id);
-            $this->db->update('merchant_data', array(
-                'id_variant' => $product_variant[0]['id']
-            ));
-            echo $product_variant[0]['id'];
-        }else{
-            echo 0;
-        }
     }
 }
 ?>

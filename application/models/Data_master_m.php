@@ -3,16 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Data_master_m extends CI_Model{
 
-    function create_id_messages(){
-        $q = $this->db->query("SELECT MAX(RIGHT(id,2)) AS kd_max FROM messages WHERE DATE(create_at)=CURDATE()");
+    function create_id_logs(){
+        $q = $this->db->query("SELECT MAX(RIGHT(id,3)) AS kd_max FROM logs WHERE DATE(create_at)=CURDATE()");
         $kd = "";
             if($q->num_rows()>0){
                 foreach($q->result() as $k){
                     $tmp = ((int)$k->kd_max)+1;
-                    $kd = sprintf("%03s", $tmp);
+                    $kd = sprintf("%04s", $tmp);
                 }
             }else{
-                $kd = "001";
+                $kd = "0001";
             }
 
             date_default_timezone_set('Asia/Jakarta');
@@ -58,5 +58,65 @@ class Data_master_m extends CI_Model{
         $this->db->from('merchant_data');
         $query = $this->db->get();
         return $query->result_array();
+    }
+
+    function member_all($shop){
+        $this->db->select('*');
+        $this->db->from('member');
+        $this->db->where('data !=', '');
+        $this->db->where('shop', $shop);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    function member($shop,$id){
+        $this->db->select('*');
+        $this->db->from('member');
+        $this->db->where('id', $id);
+        $this->db->where('shop', $shop);
+        $this->db->where('data !=', '');
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    function earns($id_merchant){
+        $this->db->select('*');
+        $this->db->from('earns');
+        $this->db->where('id_merchant',$id_merchant);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    function earn_event($id_merchant,$event){
+        $this->db->select('*');
+        $this->db->from('earns');
+        $this->db->where('id_merchant',$id_merchant);
+        $this->db->where('event',$event);
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    function earn($id){
+        $this->db->select('*');
+        $this->db->from('earns');
+        $this->db->where('id',$id);
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+    function rewards($id_merchant){
+        $this->db->select('*');
+        $this->db->from('rewards');
+        $this->db->where('id_merchant', $id_merchant);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    function reward($id){
+        $this->db->select('*');
+        $this->db->from('rewards');
+        $this->db->where('id',$id);
+        $query = $this->db->get();
+        return $query->row();
     }
 }

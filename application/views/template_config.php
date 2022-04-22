@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="<?php echo base_url() ?>assets/backend/js/plugin/UI/jquery-ui.min.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugin/select2/select2.min.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugin/font-awesome-4-6-3/font-awesome.min.css">
+    <script src="<?php echo base_url() ?>assets/backend/js/core/jquery.3.2.1.min.js"></script>
 </head>
 <body>
 
@@ -31,18 +32,23 @@
                     
                     <nav class="navbar navbar-header-left navbar-expand-lg p-0">
                         <ul class="navbar-nav page-navigation pl-md-3" style="margin: auto;">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#">
+                            <li class="nav-item <?php if($nav == 'member'){ echo 'active';}?>">
+                                <a class="nav-link" href="<?=base_url().'config?id='.$id?>">
                                     Members
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
+                            <li class="nav-item <?php if($nav == 'reward'){ echo 'active';}?>">
+                                <a class="nav-link" href="<?=base_url().'config/rewards?id='.$id?>">
                                     Rewards
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
+                            <li class="nav-item <?php if($nav == 'setting'){ echo 'active';}?>">
+                                <a class="nav-link" href="<?=base_url().'config/settings?id='.$id?>">
+                                    Settings
+                                </a>
+                            </li>
+                            <li class="nav-item <?php if($nav == 'log'){ echo 'active';}?>">
+                                <a class="nav-link" href="<?=base_url().'config/logs?id='.$id?>">
                                     Log Activities
                                 </a>
                             </li>
@@ -79,7 +85,6 @@
 </body>
 
 <!--   Core JS Files   -->
-    <script src="<?php echo base_url() ?>assets/backend/js/core/jquery.3.2.1.min.js"></script>
     <script src="<?php echo base_url() ?>assets/backend/js/core/popper.min.js"></script>
     <script src="<?php echo base_url() ?>assets/backend/js/core/bootstrap.min.js"></script>
 
