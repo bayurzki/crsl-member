@@ -425,14 +425,14 @@ class Webhooks extends CI_Controller {
     public function customer_create(){
         header('Content-Type: application/json');
         $data = file_get_contents('php://input');
-        //$data = $this->dummy_customer();
+        $data = $this->dummy_customer();
         $data_ = json_decode($data, true);
         $shop = $_GET['shop'];
 
         $merchant_row = $this->Data_master_m->merchant_row($shop);
         $member = $this->Data_master_m->member($merchant_row->url_shopify,$data_['id']);
         $earn_account = $this->Data_master_m->earn_event($merchant_row->id_merchant,'account');
-          
+        
         if ($member == NULL) {
           if ($data_['total_spent'] > 1500000) {
             $is_member = 1;
@@ -449,35 +449,30 @@ class Webhooks extends CI_Controller {
           );
 
           $this->db->insert('member', $data_default);
+        }
 
+        if ($earn_account->is_active == 1) {
+          $add_point = $earn_account->point;
+          $add_point = $member->points + $add_point;
+          $logs = array(
+            'id_order' => $data_['id'],
+            'id_customer' => $data_['id'],
+            'add_point' => $add_point
+          );
           
-          if ($earn_account != NULL) {
-            $add_point = $earn_account->point;
-            $add_point = $member->points + $add_point;
-            $logs = array(
-              'id_order' => $data_['id'],
-              'id_customer' => $data_['customer']['id'],
-              'add_point' => $add_point,
-              'total' => $data_['total_price'],
-              'sub_total' => $data_['subtotal_price'],
-              'discount' => $data_['total_discounts'],
-              'shipping' => $data_['total_shipping_price_set']['shop_money']['amount']
-            );
+          $this->db->where('id',$data_['id']);
+          $this->db->update('member', array(
+            'points' => $add_point
+          ));
 
-            $this->db->where('id',$data_['customer']['id']);
-            $this->db->update('member', array(
-              'points' => $add_point
-            ));
-
-            $data_logs = array(
-              'id' => $this->Data_master_m->create_id_logs(),
-              'id_merchant' => $merchant_row->id_merchant,
-              'event' => 'account',
-              'content' => json_encode($logs),
-              'create_at' => date('Y-m-d H:i:s')
-            );
-            $this->db->insert('logs', $data_logs); 
-          }
+          $data_logs = array(
+            'id' => $this->Data_master_m->create_id_logs(),
+            'id_merchant' => $merchant_row->id_merchant,
+            'event' => 'account',
+            'content' => json_encode($logs),
+            'create_at' => date('Y-m-d H:i:s')
+          );
+          $this->db->insert('logs', $data_logs); 
         }
     }
 
@@ -559,8 +554,8 @@ class Webhooks extends CI_Controller {
               'create_at' => date('Y-m-d H:i:s')
           );
           $this->db->insert('member', $data_default);
-          $earn_account = $this->Data_master_m->earn_event($shop,'account');
-          if ($earn_account != NULL) {
+          $earn_account = $this->Data_master_m->earn_event($merchant_row->id_merchant,'account');
+          if ($earn_account->is_active == 1) {
             $add_point = $earn_account->point;
             $add_point = $member->points + $add_point;
             $logs = array(
