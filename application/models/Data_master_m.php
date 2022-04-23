@@ -92,6 +92,7 @@ class Data_master_m extends CI_Model{
         $this->db->from('earns');
         $this->db->where('id_merchant',$id_merchant);
         $this->db->where('event',$event);
+        $this->db->where('is_active',1);
         $query = $this->db->get();
         return $query->row();
     }
