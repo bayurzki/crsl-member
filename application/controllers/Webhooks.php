@@ -467,8 +467,8 @@ class Webhooks extends CI_Controller {
               'create_at' => date('Y-m-d H:i:s')
             );
             $this->db->insert('logs', $data_logs); 
+          }
         }
-        
     }
 
     public function order_paid(){
