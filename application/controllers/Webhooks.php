@@ -411,6 +411,13 @@ class Webhooks extends CI_Controller {
       return $data;
     }
 
+    private function dummy_customer(){
+      $data = '
+      {"id":5927087964342,"email":"tes3@aaa.com","accepts_marketing":false,"created_at":"2022-04-23T23:34:41+07:00","updated_at":"2022-04-23T23:34:41+07:00","first_name":"","last_name":"","orders_count":0,"state":"disabled","total_spent":"0.00","last_order_id":null,"note":"","verified_email":true,"multipass_identifier":null,"tax_exempt":false,"phone":null,"tags":"","last_order_name":null,"currency":"IDR","addresses":[],"accepts_marketing_updated_at":"2022-04-23T23:34:41+07:00","marketing_opt_in_level":null,"tax_exemptions":[],"email_marketing_consent":{"state":"not_subscribed","opt_in_level":"single_opt_in","consent_updated_at":null},"sms_marketing_consent":null,"admin_graphql_api_id":"gid:\/\/shopify\/Customer\/5927087964342"}';
+
+      return $data;
+    }
+
     public function index(){
     	echo 'Page not found';
     }
@@ -418,11 +425,14 @@ class Webhooks extends CI_Controller {
     public function customer_create(){
         header('Content-Type: application/json');
         $data = file_get_contents('php://input');
+        $data = $this->dummy_customer();
         $data_ = json_decode($data, true);
         $shop = $_GET['shop'];
 
         $merchant_row = $this->Data_master_m->merchant_row($shop);
         $member = $this->Data_master_m->member($merchant_row->url_shopify,$data_['id']);
+        $earn_account = $this->Data_master_m->earn_event($merchant_row->id_merchant,'account');
+          
         if ($member == NULL) {
           if ($data_['total_spent'] > 1500000) {
             $is_member = 1;
@@ -438,9 +448,9 @@ class Webhooks extends CI_Controller {
               'create_at' => date('Y-m-d H:i:s')
           );
 
-          $this->db->insert('member', $data_default);
+          //$this->db->insert('member', $data_default);
 
-          $earn_account = $this->Data_master_m->earn_event($shop,'account');
+          
           if ($earn_account != NULL) {
             $add_point = $earn_account->point;
             $add_point = $member->points + $add_point;
