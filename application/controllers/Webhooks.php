@@ -425,7 +425,7 @@ class Webhooks extends CI_Controller {
     public function customer_create(){
         header('Content-Type: application/json');
         $data = file_get_contents('php://input');
-        $data = $this->dummy_customer();
+        //$data = $this->dummy_customer();
         $data_ = json_decode($data, true);
         $shop = $_GET['shop'];
 
