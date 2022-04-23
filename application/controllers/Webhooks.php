@@ -448,7 +448,7 @@ class Webhooks extends CI_Controller {
               'create_at' => date('Y-m-d H:i:s')
           );
 
-          //$this->db->insert('member', $data_default);
+          $this->db->insert('member', $data_default);
 
           
           if ($earn_account != NULL) {
