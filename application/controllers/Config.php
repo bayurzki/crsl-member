@@ -20,7 +20,7 @@ class Config extends CI_Controller {
 
         $script_tags = $this->shopify->api_get($data['shop']->url_shopify,'script_tags.json',$data['shop']->token_store);
         $script_tags = json_decode($script_tags,TRUE);
-        var_dump($script_tags);
+        var_dump(sizeof($script_tags['script_tags']),$script_tags);
         if (sizeof($script_tags['script_tags']) < 1) {
             $scriptna = '{
                 "src": "'.base_url().'assets/js-shopify/crsl-member.js",
