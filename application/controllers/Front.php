@@ -60,7 +60,7 @@ class Front extends CI_Controller {
         			echo '<p style="text-align: center;">Please re-install this apps. </p><br />';
 	        		echo '<a href="'.$install_url.'" style="text-align: center; background: #177bf7; color: #fff; max-width: 120px; display: block; text-decoration: none; margin: 15px auto; padding: 15px;" target="_top">Re-install App</a>';
         		}else{
-        			if (sizeof($scopena['access_scopes']) == 10) {
+        			if (sizeof($scopena['access_scopes']) == 12) {
 	        			redirect('config?id='.$merchant_row->id_merchant);
 	        		}else{
 	        			$re_install = 'https://'.$merchant_row->url_shopify.'/admin/oauth/authorize?client_id='.$api_key.'&scope='.$scopes.'&redirect_uri='.urlencode($redirect_scope);
