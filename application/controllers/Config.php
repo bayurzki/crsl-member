@@ -28,7 +28,8 @@ class Config extends CI_Controller {
                 "cache": false
             }';
 
-            $this->shopify->api_post($data['shop']->url_shopify,'script_tags.json',$data['shop']->token_store, $scriptna);
+            $post = $this->shopify->api_post($data['shop']->url_shopify,'script_tags.json',$data['shop']->token_store, $scriptna);
+            var_dump("expression",$post);
         }
         if (sizeof($webhook['webhooks']) < 3) {
             if (base_url() == 'https://crsl-member.com/') {
