@@ -221,7 +221,7 @@ class Config extends CI_Controller {
             $page = '{
             "page": {
                 "title":"Redeem Reward - '.$title.'",
-                "body_html":"<a href=\"#\" onclick=\"redeem_reward('..')\">Redeem</a>"
+                "body_html":"<a href=\"#\" onclick=\"redeem_reward('.$last_id.')\">Redeem</a>"
                 }
             }';
 
