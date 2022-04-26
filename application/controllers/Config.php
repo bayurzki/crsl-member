@@ -17,7 +17,10 @@ class Config extends CI_Controller {
         $data['shop'] = $this->Data_master_m->merchant_byid($_GET['id']);
         $webhook = $this->shopify->api_get($data['shop']->url_shopify,'webhooks.json',$data['shop']->token_store);
         $webhook = json_decode($webhook,TRUE);
-        
+
+        $script_tags = $this->shopify->api_get($data['shop']->url_shopify,'script_tags.json',$data['shop']->token_store);
+        $script_tags = json_decode($script_tags,TRUE);
+        var_dump($script_tags);
         if (sizeof($webhook['webhooks']) < 3) {
             if (base_url() == 'https://crsl-member.com/') {
                 $base_url = 'https://bdd.services/crsl-member/';
