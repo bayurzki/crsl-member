@@ -217,16 +217,17 @@ class Config extends CI_Controller {
                 'create_at' => date('Y-m-d H:i:s', strtotime($create_at))
             );
             $this->db->insert('rewards', $data);
+            $last_id = $this->db->insert_id();
             $page = '{
             "page": {
                 "title":"Redeem Reward - '.$title.'",
-                "body_html":"<a href=\"#\" onclick=\"redeem_reward('.$this->db->insert_id().')\">Redeem</a>"
+                "body_html":"<a href=\"#\" onclick=\"redeem_reward('..')\">Redeem</a>"
                 }
             }';
 
             $page_post = $this->shopify->api_post($merchant_row->url_shopify,'pages.json',$merchant_row->token_store,$page);
             $page_post = json_decode($page_post,true);
-            $this->db->update('id',$this->db->insert_id());
+            $this->db->update('id',$last_id);
             $this->db->update('rewards', array(
                 'url_redeem' => $page_post['page']['handle']
             ));
