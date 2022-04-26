@@ -20,7 +20,15 @@ class Config extends CI_Controller {
 
         $script_tags = $this->shopify->api_get($data['shop']->url_shopify,'script_tags.json',$data['shop']->token_store);
         $script_tags = json_decode($script_tags,TRUE);
-        var_dump($script_tags);
+        if (sizeof($script_tags['script_tags']) < 1) {
+            $scriptna = '{
+                "src": "'.base_url().'assets/js-shopify/crsl-member.js",
+                "event": "onload",
+                "cache": false
+            }';
+
+            $this->shopify->api_post($data['shop']->url_shopify,'script_tags.json',$data['shop']->token_store, $scriptna);
+        }
         if (sizeof($webhook['webhooks']) < 3) {
             if (base_url() == 'https://crsl-member.com/') {
                 $base_url = 'https://bdd.services/crsl-member/';
