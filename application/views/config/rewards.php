@@ -49,7 +49,7 @@
 								<!-- <td><?=$value['ket']?></td> -->
 								
 								<td>
-									<a href="<?= base_url().'config/update_earn/'.$value['id'].'?id='.$id ?>" class="btn btn-xs btn-primary" title="Edit"><i class="fa fa-edit"></i></a>
+									<a href="<?= base_url().'config/reward_form?id='.$id.'&data_id='.$value['id'] ?>" class="btn btn-xs btn-primary" title="Edit"><i class="fa fa-edit"></i></a>
 								</td>
 							</tr>
 						<?php } ?>								

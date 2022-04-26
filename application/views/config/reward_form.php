@@ -28,7 +28,7 @@ if (is_object($reward)) {
 						<label class="col-md-3 col-form-label">Name</label>
 						<div class="col-md-6 p-0">
 							<input type="hidden" name="shop_id" value="<?=$id?>" />
-							<input type="hidden" name="id" value="<?=$reward_id?>" />
+							<input type="hidden" name="data_id" value="<?=$reward_id?>" />
 							<input type="text" name="title" value="<?=$title?>" class="form-control input-full" />
 						</div>
 					</div>
@@ -78,15 +78,15 @@ if (is_object($reward)) {
 <script type="text/javascript">
 init_type();
 function init_type(){
-	var id_ = "<?=$id?>";
+	var id_ = $('input[name=data_id]').val();
 	var type = "<?=$type?>";
-    var urlna = "<?=base_url().'/config/form_terms/' ?>";
+    var urlna = "<?=base_url().'/config/form_terms?id='.$id ?>";
     $.ajax({
         url: urlna,  
         type: 'POST',
         data: {
         	type: type,
-        	id: id_
+        	data_id: id_
         },
         success:function(data){
             $("#terms").html(data)
@@ -95,15 +95,15 @@ function init_type(){
 }
 
 function get_type(){
-	var id_ = "<?=$id?>";
+	var id_ = $('input[name=data_id]').val();
 	var type = $('select[name="type"]').val();
-    var urlna = "<?=base_url().'/config/form_terms/' ?>";
+    var urlna = "<?=base_url().'/config/form_terms?id='.$id ?>";
     $.ajax({
         url: urlna,  
         type: 'POST',
         data: {
         	type: type,
-        	id: id_
+        	data_id: id_
         },
         success:function(data){
             $("#terms").html(data)

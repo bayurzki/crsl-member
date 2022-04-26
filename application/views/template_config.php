@@ -44,7 +44,7 @@
                             </li>
                             <li class="nav-item <?php if($nav == 'setting'){ echo 'active';}?>">
                                 <a class="nav-link" href="<?=base_url().'config/settings?id='.$id?>">
-                                    Settings
+                                    Earns
                                 </a>
                             </li>
                             <li class="nav-item <?php if($nav == 'log'){ echo 'active';}?>">

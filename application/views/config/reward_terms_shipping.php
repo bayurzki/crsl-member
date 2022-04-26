@@ -6,8 +6,8 @@ if (is_object($reward)) {
 }
 
 if ($terms != '') {
-	$terms = json_decode($decode,false);
-	$minimum_order = $terms->minimum_order;
+	$terms = json_decode($reward->terms,false);
+	$minimum_order = $terms->min_order;
 	$max_discount = $terms->max_discount;
 }else{
 	$minimum_order = 0;

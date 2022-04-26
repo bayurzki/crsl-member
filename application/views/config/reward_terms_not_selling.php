@@ -6,9 +6,14 @@ if (is_object($reward)) {
 }
 
 if ($terms != '') {
-	$terms = json_decode($decode,false);
-	$minimum_order = $terms->minimum_order;
-	$gift_name = $terms->gift_name;
+	if (property_exists($terms, 'gift_name')) {
+		$terms = json_decode($reward->terms,false);
+		$minimum_order = $terms->min_order;
+		$gift_name = $terms->gift_name;
+	}else{
+		$minimum_order = 0;
+		$gift_name = '';
+	}
 }else{
 	$minimum_order = 0;
 	$gift_name = '';

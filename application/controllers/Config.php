@@ -104,7 +104,7 @@ class Config extends CI_Controller {
     public function reward_form(){
         $data['id'] = $_GET['id'];
         if (isset($_GET['data_id'])) {
-            $data['reward'] = $this->Data_master_m->earn($_GET['data_id']);
+            $data['reward'] = $this->Data_master_m->reward($_GET['data_id']);
         }else{
             $data['reward'] = '';
         }
@@ -114,13 +114,14 @@ class Config extends CI_Controller {
 
     public function form_terms(){
         extract($_POST);
-        $data['shop'] = $this->Data_master_m->merchant_byid($id);
-        $data['id'] = $id;
-        if ($id != 0) {
-            $data['reward'] = $this->Data_master_m->earn($id);
+        $data['shop'] = $this->Data_master_m->merchant_byid($_GET['id']);
+        $data['id'] = $_GET['id'];
+        if ($data_id != 0) {
+            $data['reward'] = $this->Data_master_m->reward($data_id);
         }else{
             $data['reward'] = '';
         }
+        
         if ($type == 0) {
             $this->load->view('config/reward_terms_shipping',$data);
         }elseif ($type == 1) {
