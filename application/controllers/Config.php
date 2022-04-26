@@ -159,6 +159,7 @@ class Config extends CI_Controller {
 
     public function reward_save(){
         extract($_POST);
+        $merchant_row = $this->Data_master_m->merchant_byid($shop_id);
         if ($type == 0) {
             $terms = array(
                 'min_order' => $minimum_order,
@@ -203,8 +204,8 @@ class Config extends CI_Controller {
                 'gift_name' => $gift_name
             );
         }
-        // var_dump($terms);
-        // die();
+        
+
         if ($id == 0) {
             $data = array(
                 'id_merchant' => $shop_id,
@@ -216,6 +217,19 @@ class Config extends CI_Controller {
                 'create_at' => date('Y-m-d H:i:s', strtotime($create_at))
             );
             $this->db->insert('rewards', $data);
+            $page = '{
+            "page": {
+                "title":"Redeem Reward - '.$title.'",
+                "body_html":"<a href=\"#\" onclick=\"redeem_reward('.$this->db->insert_id().')\">Redeem</a>"
+                }
+            }';
+
+            $page_post = $this->shopify->api_post($merchant_row->url_shopify,'pages.json',$merchant_row->token_store,$page);
+            $page_post = json_decode($page_post,true);
+            $this->db->update('id',$this->db->insert_id());
+            $this->db->update('rewards', array(
+                'url_redeem' => $page_post['page']['handle']
+            ));
         }else{
             $data = array(
                 'id_merchant' => $shop_id,
