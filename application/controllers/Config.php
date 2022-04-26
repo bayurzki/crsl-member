@@ -206,7 +206,7 @@ class Config extends CI_Controller {
         }
         
 
-        if ($id == 0) {
+        if ($data_id == 0) {
             $data = array(
                 'id_merchant' => $shop_id,
                 'title' => $title,
@@ -240,7 +240,7 @@ class Config extends CI_Controller {
                 'multi_use' => $multi_use,
                 'update_at' => date('Y-m-d H:i:s', strtotime($create_at))
             );
-            $this->db->where('id',$id);
+            $this->db->where('id',$data_id);
             $this->db->update('rewards', $data);
         }
 
