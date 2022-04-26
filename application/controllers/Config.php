@@ -214,7 +214,7 @@ class Config extends CI_Controller {
                 'terms' => json_encode($terms),
                 'point' => $point,
                 'multi_use' => $multi_use,
-                'create_at' => date('Y-m-d H:i:s', strtotime($create_at))
+                'create_at' => date('Y-m-d H:i:s')
             );
             $this->db->insert('rewards', $data);
             $last_id = $this->db->insert_id();
@@ -227,10 +227,11 @@ class Config extends CI_Controller {
 
             $page_post = $this->shopify->api_post($merchant_row->url_shopify,'pages.json',$merchant_row->token_store,$page);
             $page_post = json_decode($page_post,true);
-            $this->db->update('id',$last_id);
+            $this->db->where('id',$last_id);
             $this->db->update('rewards', array(
                 'url_redeem' => $page_post['page']['handle']
-            ));
+                )
+            );
         }else{
             $data = array(
                 'id_merchant' => $shop_id,
