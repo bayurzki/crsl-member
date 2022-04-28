@@ -100,13 +100,22 @@ function redeem_reward(i){
         url: base_url() + "membership/redeem",
         data: datana,
         success: function(response){
-        	console.log(response);
-            $('#result_redeem').html(
-        		'<div style="text-align:center; margin: 35px;">' +
-            		'<h1 style="margin:15px;">Congratulations!</h1>' +
-            		'<h3>You\'ve successfully redeemed a Gift, for more info admin will contact you.</h3>' +
-            	'</div>'
-        	);
+        	obj = JSON.parse(response);
+        	if (obj.code == 3){
+        		$('#result_redeem').html(
+	        		'<div style="text-align:center; margin: 35px;">' +
+	            		'<h1 style="margin:15px;">'+obj.title+'</h1>' +
+	            		'<p>'+obj.messages+'</p>' +
+	            	'</div>'
+	        	);	
+        	}else{
+        		$('#result_redeem').html(
+	        		'<div style="text-align:center; margin: 35px;">' +
+	            		'<h1 style="margin:15px;">Congratulations!</h1>' +
+	            		'<h3>You\'ve successfully redeemed a Gift, for more info admin will contact you.</h3>' +
+	            	'</div>'
+	        	);	
+        	}
         }
     });
 }
