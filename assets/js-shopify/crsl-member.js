@@ -15,11 +15,21 @@ if ($("div#crsl_membership").length > 0) {
         data: datana,
         success: function(response){
             obj = JSON.parse(response);
-        	if (obj.code == 0 || obj.code == 404) {
+        	if (obj.code == 0) {
         		$("div#crsl_membership").html(
-            		'<div style="text-align:center; margin: 35px;">' +
-	            		'<h1 style="margin:15px;">Membership Rewards</h1>' +
-	            		'<h3>You`re not registered as member, please contact administrator.</h3>' +
+            		'<div style="margin: 35px; max-width:520px; margin: auto;">' +
+	            		'<h2 style="font-size:24px; font-weight: bold;">Membership Rewards</h2>' +
+	            		'<h5>You`re not registered as member, please contact administrator.</h5>' +
+	            		'<table class="table">'+
+		            		'<tr>'+
+		            			'<th>Total Spent</th>'+
+		            			'<th>'+obj.total_spent+'</th>'+
+		            		'</tr>'+
+		            		'<tr>'+
+		            			'<th>Point</th>'+
+		            			'<th>'+obj.point+'</th>'+
+		            		'</tr>'+
+	            		'</table>'+
 	            	'</div>'
             	);
         	}else{
@@ -34,6 +44,7 @@ if ($("div#crsl_membership").length > 0) {
         }
     });
 }
+
 $("#cek_shipping_membership").click(function(){
 	var datana = {
 		'url_shopify': Shopify.shop,

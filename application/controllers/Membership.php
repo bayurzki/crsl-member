@@ -29,8 +29,15 @@ class Membership extends CI_Controller {
             );
         }else{
             if ($member->is_member == 0) {
+                $shop = $this->Data_master_m->merchant_row($url_shopify);
+                $customer = $this->shopify->api_get($url_shopify,'customers/'.$customer_id.'.json',$shop->token_store);
+                $customer = json_decode($customer,false);
+                $customer = $customer->customer;
+
                 $data = array(
                     'code' => 0,
+                    'total_spent' => number_format($customer->total_spent),
+                    'point' => $member->points,
                     'messages' => 'Not Registered as Member, please make purchased at least IDR 1,500,000'
                 );
             }else{
