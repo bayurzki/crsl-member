@@ -194,6 +194,7 @@ class Membership extends CI_Controller {
             );
         }
         
+        echo json_encode($callback);   
     }
 
     public function apply_shipping(){
