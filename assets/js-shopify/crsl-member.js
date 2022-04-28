@@ -23,15 +23,15 @@ if ($("div#crsl_membership").length > 0) {
 	            		'<h5>'+obj.messages+'</h5>' +
 	            		'<table class="table" style="width: 100%;">'+
 		            		'<tr>'+
-		            			'<th style="width: 200px;text-align: left;">Status Member</th>'+
+		            			'<th style="text-align: left;">Status Member</th>'+
 		            			'<th style="text-align: right;">Tidak aktif</th>'+
 		            		'</tr>'+
 		            		'<tr>'+
-		            			'<th style="width: 200px;text-align: left;">Akumulasi total belanja</th>'+
+		            			'<th style="text-align: left;">Akumulasi total belanja</th>'+
 		            			'<th style="text-align: right;">Rp. '+obj.total_spent+'</th>'+
 		            		'</tr>'+
 		            		'<tr>'+
-		            			'<th style="width: 200px;text-align: left;">Point</th>'+
+		            			'<th style="text-align: left;">Point</th>'+
 		            			'<th style="text-align: right;">'+obj.point+'</th>'+
 		            		'</tr>'+
 	            		'</table>'+
@@ -44,15 +44,15 @@ if ($("div#crsl_membership").length > 0) {
 	            		'<h5>'+obj.messages+'</h5>' +
 	            		'<table class="table" style="width: 100%;">'+
 		            		'<tr>'+
-		            			'<th style="width: 200px;text-align: left;">Status Member</th>'+
+		            			'<th style="text-align: left;">Status Member</th>'+
 		            			'<th style="text-align: right;">Aktif</th>'+
 		            		'</tr>'+
 		            		'<tr>'+
-		            			'<th style="width: 200px;text-align: left;">Akumulasi total belanja</th>'+
+		            			'<th style="text-align: left;">Akumulasi total belanja</th>'+
 		            			'<th style="text-align: right;">Rp. '+obj.total_spent+'</th>'+
 		            		'</tr>'+
 		            		'<tr>'+
-		            			'<th style="width: 200px;text-align: left;">Point</th>'+
+		            			'<th style="text-align: left;">Point</th>'+
 		            			'<th style="text-align: right;">'+obj.point+'</th>'+
 		            		'</tr>'+
 	            		'</table>'+
