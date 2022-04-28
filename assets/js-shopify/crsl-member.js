@@ -1,6 +1,6 @@
 function base_url(){
-    //var base_url = "https://crsl-member.com/";
-    var base_url = "https://crsl-member.shopify-plugin.devbdd.com/";
+    var base_url = "https://crsl-member.com/";
+    //var base_url = "https://crsl-member.shopify-plugin.devbdd.com/";
     return base_url   
 }
 
@@ -20,14 +20,18 @@ if ($("div#crsl_membership").length > 0) {
         		$("div#crsl_membership").html(
             		'<div style="margin: 35px; max-width:520px; margin: auto;">' +
 	            		'<h2 style="font-size:24px; font-weight: bold;">Membership Rewards</h2>' +
-	            		'<h5>You`re not registered as member, please contact administrator.</h5>' +
+	            		'<h5>'+obj.messages+'</h5>' +
 	            		'<table class="table">'+
 		            		'<tr>'+
-		            			'<th>Total Spent</th>'+
-		            			'<th>'+obj.total_spent+'</th>'+
+		            			'<th style="width: 200px;">Status Member</th>'+
+		            			'<th>Tidak aktif</th>'+
 		            		'</tr>'+
 		            		'<tr>'+
-		            			'<th>Point</th>'+
+		            			'<th style="width: 200px;">Akumulasi total belanja</th>'+
+		            			'<th>Rp. '+obj.total_spent+'</th>'+
+		            		'</tr>'+
+		            		'<tr>'+
+		            			'<th style="width: 200px;">Point</th>'+
 		            			'<th>'+obj.point+'</th>'+
 		            		'</tr>'+
 	            		'</table>'+
@@ -35,10 +39,23 @@ if ($("div#crsl_membership").length > 0) {
             	);
         	}else{
         		$("div#crsl_membership").html(
-            		'<div style="text-align:center; margin: 35px;">' +
-	            		'<h1 style="margin:15px;">Membership Rewards</h1>' +
-	            		'<h3>Point:'+obj.point+'</h3>' +
-	            		'<h3>Total Spent:'+obj.total_spent+'</h3>' +
+            		'<div style="margin: 35px; max-width:520px; margin: auto;">' +
+	            		'<h2 style="font-size:24px; font-weight: bold;">Membership Rewards</h2>' +
+	            		'<h5>'+obj.messages+'</h5>' +
+	            		'<table class="table">'+
+		            		'<tr>'+
+		            			'<th style="width: 200px;">Status Member</th>'+
+		            			'<th>Aktif</th>'+
+		            		'</tr>'+
+		            		'<tr>'+
+		            			'<th style="width: 200px;">Akumulasi total belanja</th>'+
+		            			'<th>Rp. '+obj.total_spent+'</th>'+
+		            		'</tr>'+
+		            		'<tr>'+
+		            			'<th style="width: 200px;">Point</th>'+
+		            			'<th>'+obj.point+'</th>'+
+		            		'</tr>'+
+	            		'</table>'+
 	            	'</div>'
             	);
         	}
