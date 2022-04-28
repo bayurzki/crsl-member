@@ -21,18 +21,18 @@ if ($("div#crsl_membership").length > 0) {
             		'<div style="margin: 35px; max-width:520px; margin: auto;">' +
 	            		'<h2 style="font-size:24px; font-weight: bold;">Membership Rewards</h2>' +
 	            		'<h5>'+obj.messages+'</h5>' +
-	            		'<table class="table">'+
+	            		'<table class="table" style="width: 100%;">'+
 		            		'<tr>'+
 		            			'<th style="width: 200px;text-align: left;">Status Member</th>'+
-		            			'<th>Tidak aktif</th>'+
+		            			'<th style="text-align: right;">Tidak aktif</th>'+
 		            		'</tr>'+
 		            		'<tr>'+
 		            			'<th style="width: 200px;text-align: left;">Akumulasi total belanja</th>'+
-		            			'<th>Rp. '+obj.total_spent+'</th>'+
+		            			'<th style="text-align: right;">Rp. '+obj.total_spent+'</th>'+
 		            		'</tr>'+
 		            		'<tr>'+
 		            			'<th style="width: 200px;text-align: left;">Point</th>'+
-		            			'<th>'+obj.point+'</th>'+
+		            			'<th style="text-align: right;">'+obj.point+'</th>'+
 		            		'</tr>'+
 	            		'</table>'+
 	            	'</div>'
@@ -42,18 +42,18 @@ if ($("div#crsl_membership").length > 0) {
             		'<div style="margin: 35px; max-width:520px; margin: auto;">' +
 	            		'<h2 style="font-size:24px; font-weight: bold;">Membership Rewards</h2>' +
 	            		'<h5>'+obj.messages+'</h5>' +
-	            		'<table class="table">'+
+	            		'<table class="table" style="width: 100%;">'+
 		            		'<tr>'+
 		            			'<th style="width: 200px;text-align: left;">Status Member</th>'+
-		            			'<th>Aktif</th>'+
+		            			'<th style="text-align: right;">Aktif</th>'+
 		            		'</tr>'+
 		            		'<tr>'+
 		            			'<th style="width: 200px;text-align: left;">Akumulasi total belanja</th>'+
-		            			'<th>Rp. '+obj.total_spent+'</th>'+
+		            			'<th style="text-align: right;">Rp. '+obj.total_spent+'</th>'+
 		            		'</tr>'+
 		            		'<tr>'+
 		            			'<th style="width: 200px;text-align: left;">Point</th>'+
-		            			'<th>'+obj.point+'</th>'+
+		            			'<th style="text-align: right;">'+obj.point+'</th>'+
 		            		'</tr>'+
 	            		'</table>'+
 	            	'</div>'
