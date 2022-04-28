@@ -23,15 +23,15 @@ if ($("div#crsl_membership").length > 0) {
 	            		'<h5>'+obj.messages+'</h5>' +
 	            		'<table class="table">'+
 		            		'<tr>'+
-		            			'<th style="width: 200px;">Status Member</th>'+
+		            			'<th style="width: 200px;text-align: left;">Status Member</th>'+
 		            			'<th>Tidak aktif</th>'+
 		            		'</tr>'+
 		            		'<tr>'+
-		            			'<th style="width: 200px;">Akumulasi total belanja</th>'+
+		            			'<th style="width: 200px;text-align: left;">Akumulasi total belanja</th>'+
 		            			'<th>Rp. '+obj.total_spent+'</th>'+
 		            		'</tr>'+
 		            		'<tr>'+
-		            			'<th style="width: 200px;">Point</th>'+
+		            			'<th style="width: 200px;text-align: left;">Point</th>'+
 		            			'<th>'+obj.point+'</th>'+
 		            		'</tr>'+
 	            		'</table>'+
@@ -44,15 +44,15 @@ if ($("div#crsl_membership").length > 0) {
 	            		'<h5>'+obj.messages+'</h5>' +
 	            		'<table class="table">'+
 		            		'<tr>'+
-		            			'<th style="width: 200px;">Status Member</th>'+
+		            			'<th style="width: 200px;text-align: left;">Status Member</th>'+
 		            			'<th>Aktif</th>'+
 		            		'</tr>'+
 		            		'<tr>'+
-		            			'<th style="width: 200px;">Akumulasi total belanja</th>'+
+		            			'<th style="width: 200px;text-align: left;">Akumulasi total belanja</th>'+
 		            			'<th>Rp. '+obj.total_spent+'</th>'+
 		            		'</tr>'+
 		            		'<tr>'+
-		            			'<th style="width: 200px;">Point</th>'+
+		            			'<th style="width: 200px;text-align: left;">Point</th>'+
 		            			'<th>'+obj.point+'</th>'+
 		            		'</tr>'+
 	            		'</table>'+

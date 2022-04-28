@@ -249,6 +249,13 @@ class Config extends CI_Controller {
 
         redirect('config/rewards?id='.$shop_id);
     }
+
+    function logs(){
+        $data['id'] = $_GET['id'];
+        $data['nav'] = 'member';
+    }
+
+    
     function send_request_mail(){
         extract($_POST);
         $to_email = 'app@bolehdicoba.com';
