@@ -1,5 +1,6 @@
 function base_url(){
-    var base_url = "https://crsl-member.com/";
+    //var base_url = "https://crsl-member.com/";
+    var base_url = "https://crsl-member.shopify-plugin.devbdd.com/";
     return base_url   
 }
 
