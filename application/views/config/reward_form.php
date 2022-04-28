@@ -38,8 +38,8 @@ if (is_object($reward)) {
 						<div class="col-md-6 p-0">
 							<select name="type" class="form-control" onchange="get_type()">
 								<option value="0" <?php if ($type == 0) { echo "selected"; } ?>>Discount Shipping</option>
-								<option value="1" <?php if ($type == 1) { echo "selected"; } ?>>Selling Product</option>
-								<option value="2" <?php if ($type == 2) { echo "selected"; } ?>>Not Selling Product</option>
+								<option value="1" <?php if ($type == 1) { echo "selected"; } ?>>Voucher Discount</option>
+								<option value="2" <?php if ($type == 2) { echo "selected"; } ?>>Gift</option>
 							</select>
 						</div>
 					</div>

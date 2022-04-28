@@ -15,9 +15,9 @@
 							<th>Name</th>
 							<th>Type</th>
 							<th>Multi Use</th>
-							<th>Terms</th>
+							<!-- <th>Terms</th> -->
 							<th>Point</th>
-							<!-- <th>Ket</th> -->
+							<th>Page Reward</th>
 							<!-- <th>Created at</th> -->
 							<th>#</th>
 						</thead>
@@ -28,9 +28,9 @@
 							if ($value['type'] == 0) {
 								$type = 'Shipping Discount';
 							}elseif ($value['type'] == 1) {
-								$type = 'Selling Product';
+								$type = 'Voucher Discount';
 							}else{
-								$type = 'Not Selling Product';
+								$type = 'Gift';
 							}
 
 							if ($value['multi_use'] == 0) {
@@ -44,9 +44,9 @@
 								<td><?=$value['title']?></td>
 								<td><?=$type?></td>
 								<td><?=$title?></td>
-								<td><?=$value['terms']?></td>
+								<!-- <td><?=$value['terms']?></td> -->
 								<td><?=$value['point']?></td>
-								<!-- <td><?=$value['ket']?></td> -->
+								<td><a href=""><?=$value['url_redeem']?></a></td>
 								
 								<td>
 									<a href="<?= base_url().'config/reward_form?id='.$id.'&data_id='.$value['id'] ?>" class="btn btn-xs btn-primary" title="Edit"><i class="fa fa-edit"></i></a>

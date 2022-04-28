@@ -117,7 +117,7 @@ class Config extends CI_Controller {
     public function reward_form(){
         $data['id'] = $_GET['id'];
         if (isset($_GET['data_id'])) {
-            $data['reward'] = $this->Data_master_m->reward($_GET['data_id']);
+            $data['reward'] = $this->Data_master_m->reward($_GET['data_id'],$_GET['id']);
         }else{
             $data['reward'] = '';
         }
@@ -130,7 +130,7 @@ class Config extends CI_Controller {
         $data['shop'] = $this->Data_master_m->merchant_byid($_GET['id']);
         $data['id'] = $_GET['id'];
         if ($data_id != 0) {
-            $data['reward'] = $this->Data_master_m->reward($data_id);
+            $data['reward'] = $this->Data_master_m->reward($data_id,$_GET['id']);
         }else{
             $data['reward'] = '';
         }
@@ -175,7 +175,7 @@ class Config extends CI_Controller {
                 $collection = json_encode($collection);
                 $terms = array(
                     'min_order' => $minimum_order,
-                    'max_discount' => $max_discount,
+                    'persen_discount' => $persen_discount,
                     'collection' => $collection,
                     'condition' => $condition
                 );
@@ -187,14 +187,14 @@ class Config extends CI_Controller {
                 $collection = json_encode($collection);
                 $terms = array(
                     'min_order' => $minimum_order,
-                    'max_discount' => $max_discount,
+                    'persen_discount' => $persen_discount,
                     'collection' => $collection,
                     'condition' => $condition
                 );
             }else{
                 $terms = array(
                     'min_order' => $minimum_order,
-                    'max_discount' => $max_discount,
+                    'persen_discount' => $persen_discount,
                     'condition' => $condition
                 );
             }
@@ -221,7 +221,8 @@ class Config extends CI_Controller {
             $page = '{
             "page": {
                 "title":"Redeem Reward - '.$title.'",
-                "body_html":"<a href=\"#\" onclick=\"redeem_reward('.$last_id.')\">Redeem</a>"
+                "body_html":"<a href=\"#\" onclick=\"redeem_reward('.$last_id.')\">Redeem</a> <div id=\"result_redeem\"></div>",
+                "template_suffix": "member_redeem"
                 }
             }';
 

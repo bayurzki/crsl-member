@@ -8,6 +8,7 @@ if ($terms != '') {
 	$terms = json_decode($reward->terms,false);
 	$minimum_order = $terms->min_order;
 	$max_discount = $terms->max_discount;
+	$persen_discount = $terms->persen_discount;
 	if (property_exists($terms, 'condition')) {
 		$con = $terms->condition;
 		if ($con == 'include') {
@@ -37,13 +38,13 @@ if ($terms != '') {
 }else{
 	$minimum_order = 0;
 	$max_discount = 0;
+	$persen_discount = 0;
 	$con = 0;
 	$show_div = 'hide';
 	$selected_in = '';
 	$selected_ex = '';
 	$selected_all = '';
 }
-var_dump($con,$show_div);
 ?>
 <div class="form-group form-inline">
 	<label class="col-md-3 col-form-label">Minimum Order</label>
@@ -53,9 +54,9 @@ var_dump($con,$show_div);
 </div>
 
 <div class="form-group form-inline">
-	<label class="col-md-3 col-form-label">Maximum Discount</label>
+	<label class="col-md-3 col-form-label">Voucher Discount (%)</label>
 	<div class="col-md-6 p-0">
-		<input type="text" name="max_discount" value="<?=$max_discount ?>" class="form-control input-full" />
+		<input type="number" min="1" max="99" name="persen_discount" value="<?=$persen_discount ?>" class="form-control input-full" />
 	</div>
 </div>
 
