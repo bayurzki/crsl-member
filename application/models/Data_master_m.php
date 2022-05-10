@@ -133,7 +133,7 @@ class Data_master_m extends CI_Model{
     }
 
     function voucher_shipping($code){
-        $this->db->select('*');
+        $this->db->select('voucher_shipping.*,rewards.terms,rewards.title,rewards.type,rewards.multi_use');
         $this->db->from('voucher_shipping');
         $this->db->join('rewards', 'rewards.id = voucher_shipping.id_reward');
         $this->db->where('code',$code);
@@ -142,7 +142,7 @@ class Data_master_m extends CI_Model{
     }
 
     function voucher_shipping_all(){
-        $this->db->select('*');
+        $this->db->select('voucher_shipping.*,rewards.terms,rewards.title,rewards.type,rewards.multi_use');
         $this->db->from('voucher_shipping');
         $this->db->join('rewards', 'rewards.id = voucher_shipping.id_reward');
         $query = $this->db->get();
