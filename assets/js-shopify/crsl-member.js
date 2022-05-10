@@ -66,8 +66,10 @@ if ($("div#crsl_membership").length > 0) {
 $("#cek_shipping_membership").click(function(){
 	var datana = {
 		'url_shopify': Shopify.shop,
+		'voucher_shipping': $("#shipping_code").val(),
 		'customer_id': customer_id
 	}
+
 	$.ajax({
         type: "POST",
         url: base_url() + "membership/apply_shipping",

@@ -204,8 +204,12 @@ class Membership extends CI_Controller {
         header("Access-Control-Allow-Headers: Authorization, Origin, X-Requested-With, Content-Type, Accept");
         extract($_POST);
         $merchant_row = $this->Data_master_m->merchant_row($url_shopify);
-        $reward = $this->Data_master_m->reward($id_reward,$merchant_row->id_merchant);
-        var_dump($reward);
-        echo 1;
+        $reward = $this->Data_master_m->voucher_shipping($voucher_shipping);
+        if ($reward != NULL) {
+            echo 1;
+        }else{
+            echo 0;
+        }
+        
     }
 }
