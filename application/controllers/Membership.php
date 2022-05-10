@@ -43,6 +43,7 @@ class Membership extends CI_Controller {
             }else{
                 $shop = $this->Data_master_m->merchant_row($url_shopify);
                 $customer = $this->shopify->api_get($url_shopify,'customers/'.$customer_id.'.json',$shop->token_store);
+
                 $customer = json_decode($customer,false);
                 $customer = $customer->customer;
                 $data = array(
@@ -78,8 +79,8 @@ class Membership extends CI_Controller {
                         'id_reward' => $id_reward,
                         'create_at' => date('Y-m-d H:i:s')
                     );
-
-                    $this->db->insert('voucher_shipping');
+                    
+                    $this->db->insert('voucher_shipping',$data_reward);
 
                     $callback = array(
                         "code" => 1,
